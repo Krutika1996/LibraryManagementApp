@@ -1,8 +1,8 @@
 package com.example.librarymanagement;
 
-import com.example.librarymanagement.controller.BookController;
+import com.example.librarymanagement.controller.LibraryController;
 import com.example.librarymanagement.model.Book;
-import com.example.librarymanagement.service.BookService;
+import com.example.librarymanagement.service.LibraryService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.MockitoAnnotations;
@@ -16,14 +16,14 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 public class BookControllerTest {
-    private BookController bookController;
-    private BookService bookService;
+    private LibraryController bookController;
+    private LibraryService bookService;
 
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
-        bookService = mock(BookService.class);
-        bookController = new BookController();
+        bookService = mock(LibraryService.class);
+        bookController = new LibraryController();
         bookController.setBookService(bookService);  // Add a setter in the controller for service injection
     }
 
@@ -38,8 +38,8 @@ public class BookControllerTest {
 
     @Test
     void testGetAllBooks_NonEmptyLibrary() {
-        Book book1 = new Book("Book 1", null);
-        Book book2 = new Book("Book 2", null);
+        Book book1 = new Book(Long.valueOf("Book 1"), null);
+        Book book2 = new Book(Long.valueOf("Book 2"), null);
         when(bookService.getAllBooks()).thenReturn(List.of(book1, book2));
 
         List<Book> books = bookController.getAllBooks();

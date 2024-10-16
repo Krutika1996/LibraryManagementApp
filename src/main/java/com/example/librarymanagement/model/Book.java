@@ -6,31 +6,37 @@ import jakarta.persistence.*;
 
 
 @Entity
+@Table(name = "libbook")
 public class Book {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private String id;
+    private Long id;
+    @Column(name = "title")
     private String title;
 
-    @ManyToOne
-    private Author author;
 
-    public Book(String id, String title) {
+
+    private int copiesAvailable; // Number of copies available
+
+    public Book(Long id, String title) {
         this.id = id;
         this.title = title;
     }
 
-    public Book(String id, String title, Author author) {
-        this.id = id;
+    public Book(String title, int copiesAvailable) {
         this.title = title;
-        this.author = author;
+        this.copiesAvailable = copiesAvailable;
     }
 
-    public String getId() {
+    public Book() {
+
+    }
+
+    public Long getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -42,11 +48,28 @@ public class Book {
         this.title = title;
     }
 
-    public Author getAuthor() {
-        return author;
+
+    public boolean isAvailable() {
+        return copiesAvailable > 0;
     }
 
-    public void setAuthor(Author author) {
-        this.author = author;
+    public void borrow() {
+        if (copiesAvailable > 0) {
+            copiesAvailable--;
+        }
     }
+
+    public void returnCopy() {
+        copiesAvailable++;
+    }
+
+    public int getCopiesAvailable() {
+        return copiesAvailable;
+    }
+
+    public void setCopiesAvailable(int copiesAvailable) {
+        this.copiesAvailable = copiesAvailable;
+    }
+
+
 }

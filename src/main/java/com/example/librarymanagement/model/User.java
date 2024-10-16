@@ -7,24 +7,24 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
+@Table(name = "\"user\"")
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String username;
+    private List<String> roles = new ArrayList<>();
 
     public User(Long id, String username) {
         this.id = id;
         this.username = username;
     }
 
-    public Long getId() {
-        return id;
+    public User() {
+
     }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
+
 
     public String getUsername() {
         return username;
@@ -36,7 +36,13 @@ public class User {
 
     @ManyToMany
     private List<Book> borrowedBooks = new ArrayList<>();
+    public List<Book> getBorrowedBooks() {
+        return borrowedBooks;
+    }
 
+    public void setBorrowedBooks(List<Book> borrowedBooks) {
+        this.borrowedBooks = borrowedBooks;
+    }
     public boolean canBorrow() {
         return borrowedBooks.size() < 2; // Limit of 2 books
     }
@@ -45,6 +51,9 @@ public class User {
         if (canBorrow()) {
             borrowedBooks.add(book);
         }
+    }
+    public void returnBook(Book book) {
+        borrowedBooks.remove(book);
     }
 
 }
