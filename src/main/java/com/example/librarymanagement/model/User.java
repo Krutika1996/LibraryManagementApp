@@ -12,7 +12,13 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @Column(name = "username")
     private String username;
+    @Column(name = "password")
+    private String password;
+
+    @ElementCollection(fetch = FetchType.EAGER)
+    @Column(name = "roles")
     private List<String> roles = new ArrayList<>();
 
     public User(Long id, String username) {
@@ -34,7 +40,12 @@ public class User {
         this.username = username;
     }
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.LAZY) // Use LAZY loading for borrowedBooks
+    @JoinTable(
+            name = "user_books", // Join table to manage the many-to-many relationship
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "book_id")
+    )
     private List<Book> borrowedBooks = new ArrayList<>();
     public List<Book> getBorrowedBooks() {
         return borrowedBooks;

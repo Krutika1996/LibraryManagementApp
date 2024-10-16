@@ -1,9 +1,13 @@
 package com.example.librarymanagement.controller;
 
 
+import com.example.librarymanagement.exception.BookException;
+import com.example.librarymanagement.exception.ResourceNotFoundException;
 import com.example.librarymanagement.model.Book;
 import com.example.librarymanagement.service.LibraryService;
+import org.apache.coyote.BadRequestException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.context.config.ConfigDataResourceNotFoundException;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -21,7 +25,10 @@ public class LibraryController {
     }
 
     @PostMapping
-    public Book addBook(@RequestBody Book book) {
+    public Book addBook(@RequestBody Book book) throws BadRequestException {
+        if (book.getTitle() == null || book.getTitle().isEmpty()) {
+            throw new BookException("Book title must not be empty");
+        }
         return bookService.addBook(book);
     }
 
@@ -31,9 +38,12 @@ public class LibraryController {
     }
 
     @PostMapping("/borrow/{userId}/{bookId}")
-    public String borrowBook(@RequestParam Long userId, @RequestParam Long bookId) {
+    public String borrowBook(@RequestParam Long userId, @RequestParam Long bookId) throws ConfigDataResourceNotFoundException {
         boolean success = bookService.borrowBook(userId, bookId);
-        return success ? "Book borrowed successfully!" : "Unable to borrow book.";
+        if (!success) {
+            throw new ResourceNotFoundException("Unable to borrow book with ID " + bookId + " for user with ID " + userId);
+        }
+        return "Book borrowed successfully!";
     }
 
     @PostMapping("/return/{userId}/{bookId}")
