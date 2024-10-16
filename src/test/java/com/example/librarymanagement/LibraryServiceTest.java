@@ -19,7 +19,7 @@ import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
 
-public class BookServiceTest {
+public class LibraryServiceTest {
     @InjectMocks
     private LibraryService bookService;
 
@@ -29,7 +29,7 @@ public class BookServiceTest {
     @Mock
     private UserRepository userRepository;
 
-    public BookServiceTest() {
+    public LibraryServiceTest() {
         MockitoAnnotations.openMocks(this);
     }
     private User user;
