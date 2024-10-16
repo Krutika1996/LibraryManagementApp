@@ -30,7 +30,7 @@ This is a Library Management System built with Spring Boot that allows users to 
 
 - Java 17 or higher
 - Gradle
-- IDE (e.g., IntelliJ IDEA)
+- IDE (IntelliJ IDEA)
 
 ### Installation
 
